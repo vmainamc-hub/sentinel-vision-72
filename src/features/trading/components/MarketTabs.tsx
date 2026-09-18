@@ -1,0 +1,7 @@
+import { Plus, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import type { Market } from "../types";
+
+export function MarketTabs({ markets, activeId, prices, onSelect, onClose, onAdd }: { markets: Market[]; activeId: string; prices: Record<string, number>; onSelect: (id: string) => void; onClose: (id: string) => void; onAdd: () => void }) {
+ return <div className="flex h-14 items-stretch overflow-x-auto border-b border-border bg-surface" aria-label="Open markets">{markets.map((market) => <div key={market.id} className={`group relative flex min-w-36 cursor-pointer items-center gap-3 border-r border-border px-3 transition-colors ${market.id === activeId ? "bg-accent shadow-[inset_0_-2px_0_var(--primary)]" : "hover:bg-muted/40"}`} onClick={() => onSelect(market.id)} role="button" tabIndex={0}><span className="size-1.5 shrink-0 rounded-full bg-positive shadow-[0_0_8px_var(--positive)]"/><div><div className="text-xs font-semibold">{market.shortName}</div><div className="font-mono text-[11px] text-muted-foreground">{(prices[market.id] ?? market.basePrice).toFixed(market.decimals)}</div></div>{markets.length > 1 && <button aria-label={`Close ${market.shortName}`} onClick={(event) => { event.stopPropagation(); onClose(market.id); }} className="ml-auto opacity-0 transition-opacity group-hover:opacity-60"><X className="size-3"/></button>}</div>)}<Button variant="ghost" size="icon" className="h-full min-w-12 rounded-none border-r border-border" onClick={onAdd} aria-label="Add market"><Plus/></Button></div>;
+}
